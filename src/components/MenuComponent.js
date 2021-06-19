@@ -8,8 +8,17 @@ class Menu extends Component {
         super(props);
     }
     
+    componentDidMount() {
+        console.log('Menu componentDidMount involked')
+    }
+
+    componentDidUpdate() {
+        console.log('Menu componentDidUpdate involked')
+    }
+
     
     render() {
+        console.log('Menu component render involked')
         const menu = this.props.dishes.map( dish => {
             return (
                 <div key={dish.id} className="col-12 col-md-5 m-1">

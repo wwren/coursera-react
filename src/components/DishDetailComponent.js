@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, List } from 'reactstrap';
 
 export class DishDetail extends Component {
+
+    componentDidMount() {
+        console.log('Dish detai componentDidMount involked')
+    }
+
+    componentDidUpdate() {
+        console.log('Dish detai componentDidUpdate involked')
+    }
+
     renderDish(selectedDish)
     {
         return(
@@ -33,6 +42,8 @@ export class DishDetail extends Component {
 
     render()
     {
+        console.log('Dish detai component render involked')
+
         if (this.props.selectedDish != null)
             {
                 return (
