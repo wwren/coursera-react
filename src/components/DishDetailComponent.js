@@ -19,13 +19,12 @@ export class DishDetail extends Component {
     {
         const comments = dish.comments;
         const listComments = comments.map(comment => {
-            let com = comment.comment;
-            let comId = comment.id;
-            return (        
-                 <div key={comId} className="mb-4">
-                    <li>{com}</li>
-                    <li>-- {comment.author}, {comment.date}</li>
-                </div>
+            return (      
+                    <div key={comment.id} className="container mb-4">
+                        <li>{comment.comment}</li>
+                        <li>-- {comment.author}, 
+                        {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</li>
+                    </div>
             )
         })
 
