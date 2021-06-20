@@ -1,44 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 
+// first way of defining function component
+function RenderMenuItem({ dish, onClick }) {
+    return (
+        <Card onClick={() => onClick(dish.id)}>
+            <CardImg width="100%" src={dish.image} alt={dish.name}/>
+                <CardImgOverlay>
+                    <CardTitle>{dish.name}</CardTitle>
+                </CardImgOverlay>
+        </Card>
+    )
+}
 
-
-class Menu extends Component {
-    constructor(props) {
-        super(props);
-    }
-    
-    componentDidMount() {
-        console.log('Menu componentDidMount involked')
-    }
-
-    componentDidUpdate() {
-        console.log('Menu componentDidUpdate involked')
-    }
-
-    
-    render() {
-        console.log('Menu component render involked')
-        const menu = this.props.dishes.map( dish => {
-            return (
-                <div key={dish.id} className="col-12 col-md-5 m-1">
-                    <Card onClick={() => this.props.onClick(dish.id)}>
-                        <CardImg width="100%" src={dish.image} alt={dish.name}/>
-                        <CardImgOverlay>
-                            <CardTitle>{dish.name}</CardTitle>
-                        </CardImgOverlay>
-                    </Card>
-                </div>
-            )
-        });
+// second way of defining function component
+const Menu = (props) => {
+    const menu = props.dishes.map( dish => {
         return (
-            <div className="container">
-                <div className="row">
-                        {menu}
-                </div>
+            <div key={dish.id} className="col-12 col-md-5 m-1">
+                <RenderMenuItem dish={dish} onClick={props.onClick}></RenderMenuItem>
             </div>
-        );
-    }
+        )
+    });
+    return (
+        <div className="container">
+            <div className="row">
+                    {menu}
+            </div>
+        </div>
+    );
 }
 
 export default Menu;
