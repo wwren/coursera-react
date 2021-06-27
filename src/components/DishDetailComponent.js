@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -8,8 +8,15 @@ import {
   List,
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Control, LocalForm, Errors } from "react-redux-form";
+import CommentForm from "./CommentFormComponent";
 
 function RenderDish({ selectedDish }) {
   return (
@@ -43,6 +50,7 @@ function RenderComments({ comments }) {
     <div className="container">
       <h4>Comments</h4>
       <List type="unstyled">{listComments}</List>
+      <CommentForm />
     </div>
   );
 }
