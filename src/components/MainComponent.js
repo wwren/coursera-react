@@ -5,6 +5,7 @@ import Menu from "./MenuComponent";
 import Home from "./HomeComponent";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { addComment } from "../redux/ActionCreators";
 import DishDetail from "./DishDetailComponent.js";
 import Contact from "./ContactComponent";
 import About from "./AboutComponent";
@@ -17,6 +18,11 @@ const mapStateToProps = (state) => {
     leaders: state.leaders,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) =>
+    dispatch(addComment(dishId, rating, author, comment)),
+});
 
 // previously main holds and maintains the states, now need to get the states from store
 class Main extends Component {
@@ -44,6 +50,7 @@ class Main extends Component {
           comments={this.props.comments.filter(
             (comment) => comment.dishId == parseInt(match.params.dishId, 10)
           )}
+          addComment={this.props.addComment}
         ></DishDetail>
       );
     };
@@ -72,4 +79,4 @@ class Main extends Component {
   }
 }
 // connect react components to react router
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
