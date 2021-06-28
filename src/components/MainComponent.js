@@ -5,10 +5,10 @@ import Menu from "./MenuComponent";
 import Home from "./HomeComponent";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { addComment } from "../redux/ActionCreators";
 import DishDetail from "./DishDetailComponent.js";
 import Contact from "./ContactComponent";
 import About from "./AboutComponent";
+import { addComment, fetchDishes } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
@@ -22,6 +22,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>
     dispatch(addComment(dishId, rating, author, comment)),
+  fetchDishes: () => {
+    dispatch(fetchDishes());
+  },
 });
 
 // previously main holds and maintains the states, now need to get the states from store
@@ -30,11 +33,17 @@ class Main extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.fetchDishes();
+  }
+
   render() {
     const HomePage = () => {
       return (
         <Home
-          dish={this.props.dishes.find((dish) => dish.featured)}
+          dish={this.props.dishes.dishes.find((dish) => dish.featured)}
+          dishesLoading={this.props.dishes.isLoading}
+          dishesErrMess={this.props.dishes.errMess}
           promotion={this.props.promotions.find((ele) => ele.featured)}
           leader={this.props.leaders.find((leader) => leader.featured)}
         />
@@ -44,9 +53,11 @@ class Main extends Component {
     const DishWithId = ({ match }) => {
       return (
         <DishDetail
-          selectedDish={this.props.dishes.find(
+          selectedDish={this.props.dishes.dishes.find(
             (dish) => dish.id == parseInt(match.params.dishId, 10)
           )}
+          isLoading={this.props.dishes.isLoading}
+          errMess={this.props.dishes.errMess}
           comments={this.props.comments.filter(
             (comment) => comment.dishId == parseInt(match.params.dishId, 10)
           )}
