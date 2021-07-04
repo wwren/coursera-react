@@ -8,7 +8,12 @@ import { connect } from "react-redux";
 import DishDetail from "./DishDetailComponent.js";
 import Contact from "./ContactComponent";
 import About from "./AboutComponent";
-import { addComment, fetchDishes } from "../redux/ActionCreators";
+import {
+  addComment,
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+} from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 
 const mapStateToProps = (state) => {
@@ -26,6 +31,12 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDishes: () => {
     dispatch(fetchDishes());
   },
+  fetchComments: () => {
+    dispatch(fetchComments());
+  },
+  fetchPromos: () => {
+    dispatch(fetchPromos());
+  },
   resetFeedbackForm: () => {
     dispatch(actions.reset("feedback"));
   },
@@ -39,6 +50,8 @@ class Main extends Component {
 
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchPromos();
+    this.props.fetchComments();
   }
 
   render() {
@@ -48,7 +61,11 @@ class Main extends Component {
           dish={this.props.dishes.dishes.find((dish) => dish.featured)}
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
-          promotion={this.props.promotions.find((ele) => ele.featured)}
+          promotion={this.props.promotions.promotions.find(
+            (ele) => ele.featured
+          )}
+          promosLoading={this.props.promotions.isLoading}
+          promosErrMess={this.props.promotions.errMess}
           leader={this.props.leaders.find((leader) => leader.featured)}
         />
       );
@@ -62,9 +79,10 @@ class Main extends Component {
           )}
           isLoading={this.props.dishes.isLoading}
           errMess={this.props.dishes.errMess}
-          comments={this.props.comments.filter(
+          comments={this.props.comments.comments.filter(
             (comment) => comment.dishId == parseInt(match.params.dishId, 10)
           )}
+          commentsErrMess={this.props.comments.errMess}
           addComment={this.props.addComment}
         ></DishDetail>
       );

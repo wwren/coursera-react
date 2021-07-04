@@ -18,11 +18,16 @@ import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import CommentForm from "./CommentFormComponent";
 import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 
 function RenderDish({ selectedDish }) {
   return (
     <Card>
-      <CardImg width="100%" src={selectedDish.image} alt={selectedDish.name} />
+      <CardImg
+        width="100%"
+        src={baseUrl + selectedDish.image}
+        alt={selectedDish.name}
+      />
       <CardBody>
         <CardTitle>{selectedDish.name}</CardTitle>
         <CardText>{selectedDish.description}</CardText>
