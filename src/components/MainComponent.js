@@ -15,6 +15,7 @@ import {
   fetchPromos,
 } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 const mapStateToProps = (state) => {
   return {
@@ -91,27 +92,35 @@ class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route path="/home" component={HomePage}></Route>
-          <Route
-            path="/aboutus"
-            component={() => <About leaders={this.props.leaders} />}
-          ></Route>
-          <Route
-            exact
-            path="/menu"
-            component={() => <Menu dishes={this.props.dishes} />}
-          ></Route>
-          <Route path="/menu/:dishId" component={DishWithId}></Route>
-          <Route
-            exact
-            path="/contactus"
-            component={() => (
-              <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
-            )}
-          ></Route>
-          <Redirect to="/home"></Redirect>
-        </Switch>
+        <TransitionGroup>
+          <CSSTransition
+            key={this.props.location.key}
+            classNames="page"
+            timeout={300}
+          >
+            <Switch location={this.props.location}>
+              <Route path="/home" component={HomePage}></Route>
+              <Route
+                path="/aboutus"
+                component={() => <About leaders={this.props.leaders} />}
+              ></Route>
+              <Route
+                exact
+                path="/menu"
+                component={() => <Menu dishes={this.props.dishes} />}
+              ></Route>
+              <Route path="/menu/:dishId" component={DishWithId}></Route>
+              <Route
+                exact
+                path="/contactus"
+                component={() => (
+                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                )}
+              ></Route>
+              <Redirect to="/home"></Redirect>
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );
