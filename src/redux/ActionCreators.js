@@ -1,5 +1,4 @@
 import * as ActionTypes from "./ActionTypes";
-import { DISHES } from "../shared/dishes";
 import { baseUrl } from "../shared/baseUrl";
 
 //action object
@@ -48,6 +47,55 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
     });
 };
 
+export const postFeedbackReducer = (feedback) => ({
+  type: ActionTypes.POST_FEEDBACK,
+  payload: feedback,
+});
+
+// export const postFeedback =
+//   (firstname, lastname, telnum, email, agree, contactType, message) =>
+//   (dispatch) => {
+//     const feedback = {
+//       firstname: firstname,
+//       lastname: lastname,
+//       telnum: telnum,
+//       email: email,
+//       agree: agree,
+//       contactType: contactType,
+//       message: message,
+//     };
+
+//     return fetch(baseUrl + "feedback", {
+//       method: "POST",
+//       body: JSON.stringify(feedback),
+//       headers: { "Content-Type": "application/json" },
+//       credentials: "same-origin",
+//     })
+//       .then(
+//         (response) => {
+//           if (response.ok) {
+//             return response;
+//           } else {
+//             var error = new Error(
+//               `Error ${response.status}: ${response.statusText}`
+//             );
+//             error.response = response;
+//             throw error;
+//           }
+//         },
+//         (error) => {
+//           var errmess = new Error(error.message);
+//           throw errmess;
+//         }
+//       )
+//       .then((response) => response.json())
+//       .then((feedback) => dispatch(postFeedbackReducer(feedback)))
+//       .catch((error) => {
+//         console.log("Post error", error.message);
+//         alert("Your commetn could not be posted\nError: " + error.message);
+//       });
+//   };
+
 export const promosLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,
 });
@@ -86,13 +134,53 @@ export const addComments = (comments) => ({
   payload: comments,
 });
 
+export const leadersLoading = () => ({
+  type: ActionTypes.LEADERS_LOADING,
+});
+
+export const leadersFailed = (errmess) => ({
+  type: ActionTypes.LEADERS_FAILED,
+  payload: errmess,
+});
+
+export const addLeaders = (leaders) => ({
+  type: ActionTypes.ADD_LEADERS,
+  payload: leaders,
+});
+
+export const fetchLeaders = () => (dispatch) => {
+  dispatch(leadersLoading());
+
+  return fetch(baseUrl + "leaders")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            `Error ${response.status}: ${response.statusText}`
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => {
+      console.log("leaders response", response);
+      console.log("leaders");
+      return response.json();
+    })
+    .then((leaders) => dispatch(addLeaders(leaders)))
+    .catch((error) => dispatch(leadersFailed(error.message)));
+};
+
 // so fetchDishes is a thunk as it returns a function but not an action like addComment
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
-
-  // setTimeout(() => {
-  //   dispatch(addDishes(DISHES));
-  // }, 2000);
 
   return fetch(baseUrl + "dishes")
     .then(

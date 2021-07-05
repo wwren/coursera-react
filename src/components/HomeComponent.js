@@ -17,23 +17,27 @@ function RenderCard({ item, isLoading, errMess }) {
   } else if (errMess) {
     return <h4>{errMess}</h4>;
   } else {
-    return (
-      <FadeTransform
-        in
-        transformProps={{ exitTransform: "scale(0.5) translateY(-50%)" }}
-      >
-        <Card>
-          <CardImg src={baseUrl + item.image} alt={item.name}></CardImg>
-          <CardBody>
-            <CardTitle>{item.name}</CardTitle>
-            {item.designation ? (
-              <CardSubtitle>{item.designation}</CardSubtitle>
-            ) : null}
-            <CardText>{item.description}</CardText>
-          </CardBody>
-        </Card>
-      </FadeTransform>
-    );
+    if (item != undefined) {
+      return (
+        <FadeTransform
+          in
+          transformProps={{ exitTransform: "scale(0.5) translateY(-50%)" }}
+        >
+          <Card>
+            <CardImg src={baseUrl + item.image} alt={item.name}></CardImg>
+            <CardBody>
+              <CardTitle>{item.name}</CardTitle>
+              {item.designation ? (
+                <CardSubtitle>{item.designation}</CardSubtitle>
+              ) : null}
+              <CardText>{item.description}</CardText>
+            </CardBody>
+          </Card>
+        </FadeTransform>
+      );
+    } else {
+      return <div> {item} </div>;
+    }
   }
 }
 
@@ -45,6 +49,8 @@ function Home({
   dishesErrMess,
   promosLoading,
   promosErrMess,
+  leadersLoading,
+  leadersErrMess,
 }) {
   return (
     <div className="container">
@@ -64,7 +70,11 @@ function Home({
           ></RenderCard>
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={leader}></RenderCard>
+          <RenderCard
+            item={leader}
+            isLoading={leadersLoading}
+            errMess={leadersErrMess}
+          ></RenderCard>
         </div>
       </div>
     </div>

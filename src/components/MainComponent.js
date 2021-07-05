@@ -13,6 +13,8 @@ import {
   fetchDishes,
   fetchComments,
   fetchPromos,
+  fetchLeaders,
+  postFeedback,
 } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -41,6 +43,29 @@ const mapDispatchToProps = (dispatch) => ({
   resetFeedbackForm: () => {
     dispatch(actions.reset("feedback"));
   },
+  fetchLeaders: () => {
+    dispatch(fetchLeaders());
+  },
+  // postFeedback: (
+  //   firstname,
+  //   lastname,
+  //   telnum,
+  //   email,
+  //   agree,
+  //   contactType,
+  //   message
+  // ) =>
+  //   dispatch(
+  //     postFeedback(
+  //       firstname,
+  //       lastname,
+  //       telnum,
+  //       email,
+  //       agree,
+  //       contactType,
+  //       message
+  //     )
+  //   ),
 });
 
 // previously main holds and maintains the states, now need to get the states from store
@@ -51,8 +76,10 @@ class Main extends Component {
 
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchLeaders();
     this.props.fetchPromos();
     this.props.fetchComments();
+    console.log("leaders", this.props.leaders);
   }
 
   render() {
@@ -67,7 +94,9 @@ class Main extends Component {
           )}
           promosLoading={this.props.promotions.isLoading}
           promosErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.find((leader) => leader.featured)}
+          leader={this.props.leaders.leaders.find((leader) => leader.featured)}
+          leadersLoading={this.props.leaders.isLoading}
+          leadersErrMess={this.props.leaders.errMess}
         />
       );
     };
@@ -102,7 +131,13 @@ class Main extends Component {
               <Route path="/home" component={HomePage}></Route>
               <Route
                 path="/aboutus"
-                component={() => <About leaders={this.props.leaders} />}
+                component={() => (
+                  <About
+                    leaders={this.props.leaders.leaders}
+                    isLoading={this.props.leaders.isLoading}
+                    errMess={this.props.leaders.errMess}
+                  />
+                )}
               ></Route>
               <Route
                 exact
@@ -114,7 +149,10 @@ class Main extends Component {
                 exact
                 path="/contactus"
                 component={() => (
-                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                  <Contact
+                    resetFeedbackForm={this.props.resetFeedbackForm}
+                    // postFeedback={this.props.postFeedback}
+                  />
                 )}
               ></Route>
               <Redirect to="/home"></Redirect>
