@@ -47,54 +47,38 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
     });
 };
 
-export const postFeedbackReducer = (feedback) => ({
-  type: ActionTypes.POST_FEEDBACK,
-  payload: feedback,
-});
+export const postFeedback = (feedbackObject) => {
+  const feedback = { ...feedbackObject };
 
-// export const postFeedback =
-//   (firstname, lastname, telnum, email, agree, contactType, message) =>
-//   (dispatch) => {
-//     const feedback = {
-//       firstname: firstname,
-//       lastname: lastname,
-//       telnum: telnum,
-//       email: email,
-//       agree: agree,
-//       contactType: contactType,
-//       message: message,
-//     };
-
-//     return fetch(baseUrl + "feedback", {
-//       method: "POST",
-//       body: JSON.stringify(feedback),
-//       headers: { "Content-Type": "application/json" },
-//       credentials: "same-origin",
-//     })
-//       .then(
-//         (response) => {
-//           if (response.ok) {
-//             return response;
-//           } else {
-//             var error = new Error(
-//               `Error ${response.status}: ${response.statusText}`
-//             );
-//             error.response = response;
-//             throw error;
-//           }
-//         },
-//         (error) => {
-//           var errmess = new Error(error.message);
-//           throw errmess;
-//         }
-//       )
-//       .then((response) => response.json())
-//       .then((feedback) => dispatch(postFeedbackReducer(feedback)))
-//       .catch((error) => {
-//         console.log("Post error", error.message);
-//         alert("Your commetn could not be posted\nError: " + error.message);
-//       });
-//   };
+  return fetch(baseUrl + "feedback", {
+    method: "POST",
+    body: JSON.stringify(feedback),
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            `Error ${response.status}: ${response.statusText}`
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => response.json())
+    .catch((error) => {
+      console.log("Post error", error.message);
+      alert("Your commetn could not be posted\nError: " + error.message);
+    });
+};
 
 export const promosLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,
@@ -169,11 +153,7 @@ export const fetchLeaders = () => (dispatch) => {
         throw errmess;
       }
     )
-    .then((response) => {
-      console.log("leaders response", response);
-      console.log("leaders");
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((leaders) => dispatch(addLeaders(leaders)))
     .catch((error) => dispatch(leadersFailed(error.message)));
 };

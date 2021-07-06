@@ -46,26 +46,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchLeaders: () => {
     dispatch(fetchLeaders());
   },
-  // postFeedback: (
-  //   firstname,
-  //   lastname,
-  //   telnum,
-  //   email,
-  //   agree,
-  //   contactType,
-  //   message
-  // ) =>
-  //   dispatch(
-  //     postFeedback(
-  //       firstname,
-  //       lastname,
-  //       telnum,
-  //       email,
-  //       agree,
-  //       contactType,
-  //       message
-  //     )
-  //   ),
+  // no need for dispatch as not change state for feedback
+  postFeedback: (values) => postFeedback(values),
 });
 
 // previously main holds and maintains the states, now need to get the states from store
@@ -151,7 +133,7 @@ class Main extends Component {
                 component={() => (
                   <Contact
                     resetFeedbackForm={this.props.resetFeedbackForm}
-                    // postFeedback={this.props.postFeedback}
+                    postFeedback={this.props.postFeedback}
                   />
                 )}
               ></Route>

@@ -10,29 +10,37 @@ import {
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 import { Loading } from "./LoadingComponent";
-
-function RenderLeader({ leader }) {
-  return (
-    <Media className="col-12">
-      <Media left className="col-2">
-        <Media object src={baseUrl + leader.image} alt="photo of leader" />
-      </Media>
-      <Media body className="col-10">
-        <Media body>
-          <Media heading>{leader.name}</Media>
-          <p>{leader.designation}</p>
-          <p>{leader.description}</p>
-        </Media>
-      </Media>
-    </Media>
-  );
-}
+import { Fade, Stagger } from "react-animation-components";
 
 function RenderLeaderList({ leaders }) {
-  const leaderMediaList = leaders.map((leader) => {
-    return <RenderLeader key={leader.id} leader={leader} />;
-  });
-  return <Media list>{leaderMediaList}</Media>;
+  return (
+    <Media list>
+      <Stagger in>
+        {leaders.map((leader) => {
+          return (
+            <Fade in>
+              <Media className="col-12">
+                <Media left className="col-2">
+                  <Media
+                    object
+                    src={baseUrl + leader.image}
+                    alt="photo of leader"
+                  />
+                </Media>
+                <Media body className="col-10">
+                  <Media body>
+                    <Media heading>{leader.name}</Media>
+                    <p>{leader.designation}</p>
+                    <p>{leader.description}</p>
+                  </Media>
+                </Media>
+              </Media>
+            </Fade>
+          );
+        })}
+      </Stagger>
+    </Media>
+  );
 }
 
 function About(props) {
